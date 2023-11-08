@@ -1,3 +1,5 @@
+import math
+
 # Tile: tile class
 
 class Tile:
@@ -35,13 +37,44 @@ class Board:
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 if isinstance(self.board[i][j], Tile):
-                    print(f"{self.board[i][j].properties}".ljust(15), end="")
+                    print(f"{self.board[i][j].properties['name']}".ljust(15), end="")
                 else:
                     print("0".ljust(15), end="")
             print()
 
+
+def calculate_property_price(position, base_price=100, scale_factor=1.15):
+    return math.ceil(base_price * (scale_factor ** position))
+
+
+
+important_city_names_sorted_by_cost = [
+    "Istanbul",
+    "Mexico City",
+    "Taipei",
+    "Seoul",
+    "Madrid",
+    "Berlin",
+    "Dubai",
+    "Sydney",
+    "London",
+    "New York",
+    "Copenhagen",
+    "Paris",
+    "Tokyo",
+    "Hong Kong",
+    "Geneva",
+    "Singapore"
+]
+
+tile_array = []
+for i, city in enumerate(important_city_names_sorted_by_cost):
+    tile = {"name": city,
+            "prices": calculate_property_price(i),
+            "current_houses": 0,
+            "id": i}
+    tile_array.append(Tile(tile))
     
-tile_array = [Tile(i) for i in range(20)]
 board = Board(5, tile_array)
 
 board.print_board()
