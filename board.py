@@ -1,4 +1,4 @@
-# Board: matrix, with each playable square storing a dictionary of information
+# Tile: tile class
 
 class Tile:
     def __init__(self,properties):
@@ -6,9 +6,8 @@ class Tile:
     
     def __str__(self):
         return f'{self.properties}'
-        
     
-            
+# Board: matrix, with each playable square storing a dictionary of information       
 
 class Board:
     def __init__(self, tiles, tile_array):
