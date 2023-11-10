@@ -42,6 +42,11 @@ class Board:
                     print("0".ljust(15), end="")
             print()
 
+class Player:
+    def __init__(self):
+        self.houses = {}
+        self.money = 0
+
 
 def calculate_property_price(position, base_price=100, scale_factor=1.15):
     return math.ceil(base_price * (scale_factor ** position))
@@ -71,6 +76,7 @@ tile_array = []
 for i, city in enumerate(important_city_names_sorted_by_cost):
     tile = {"name": city,
             "prices": calculate_property_price(i),
+            "houses_available": 3,
             "current_houses": 0,
             "id": i}
     tile_array.append(Tile(tile))
