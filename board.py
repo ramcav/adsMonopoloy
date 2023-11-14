@@ -44,8 +44,7 @@ class StreetTile(Tile):
 
     # This method is triggered when a player stop on the tile
     def when_walked(self, player: Player):
-
-        # first case: the tile does not have an owner
+        # first case: the Tile does not have an owner
         if self.owner is StreetTile.DEFAULT_PLAYER:
             while True:
                 desision = str(input("Do you want to buy this Tile? [y/n]: "))
@@ -57,7 +56,7 @@ class StreetTile(Tile):
                 elif desision == "n":
                     break
 
-        # second case: the owner is on the tile
+        # second case: the owner is on the Tile
         elif self.owner is player:
             while True:
                 desision = str(input("Do you want to buy a house [y/n]: "))
@@ -69,8 +68,9 @@ class StreetTile(Tile):
                 elif desision == 'n':
                     break
 
-
-        update_money_pool(player)
+        # third case: if any player walk an oned Tile
+        elif (self.owner is not StreetTile.DEFAULT_PLAYER) and (self.houses > 0):\
+            update_money_pool(player)
 
 
     # This method assign a tile to a player
@@ -112,11 +112,6 @@ class StreetTile(Tile):
         elif player is self.owner:
             player.money += self.money_pool
             self.money_pool = 0
-
-
-    
-    def __str__(self):
-        return f'{self.properties}'
     
 # Board: matrix, with each playable square storing a dictionary of information
 
