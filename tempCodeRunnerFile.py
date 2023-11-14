@@ -1,5 +1,18 @@
-    
-tile_array = [Tile(i) for i in range(20)]
-board = Board(5, tile_array)
-
-board.print_board()
+important_city_names_sorted_by_cost = [
+    "Istanbul",
+    "Mexico City",
+    "Taipei",
+    "Seoul",
+    "Madrid",
+    "Berlin",
+    "Dubai",
+    "Sydney",
+    "London",
+    "New York",
+    "Copenhagen",
+    "Paris",
+    "Tokyo",
+    "Hong Kong",
+    "Geneva",
+    "Singapore"
+]
