@@ -1,0 +1,1 @@
+from .capitales import capitales_dict
