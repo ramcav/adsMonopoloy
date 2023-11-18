@@ -402,7 +402,7 @@ def __string_convert(string) -> str:
     formated += string
     formated += ' ' * (str_buffer - buffer)
     formated += '|'
-    
+
     return formated
 
 
