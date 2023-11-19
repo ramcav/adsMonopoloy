@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import random
 
 import board
 import entity
@@ -85,10 +86,23 @@ class Party:
 class Turn:
     NB = 0
 
-    def __init__(self, board: board.Board) -> None:
+    def __init__(self, board: board.Board, player: entity.Player, board_size: int) -> None:
         self.turn_nb = Turn.NB
+        self.player = player
+        self.board_size = board_size
 
         Turn.NB += 1
+    
+    def roll_dice(self):
+        # roll dice and update player position
+        self.player.position = (self.player.position + random.randint(0,6)) % self.board_size
+        # walk on the tile
+        self.on_tile(self.player.position)
+    
+    def on_tile(self, tile_nb: int):
+        # activate tile action
+        self.board.board_tiles[tile_nb].when_walked(self.player)
+        
 
     # turn checking player priority -> V
     # pass player pos to board -> V
