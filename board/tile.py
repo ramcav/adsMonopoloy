@@ -1,3 +1,4 @@
+import PROJECT.entity
 import data
 import entity
 
@@ -18,11 +19,21 @@ class Tile:
 class Prison(Tile):
     def __init__(self):
         self.name = 'Prison'
+    
+    def when_walked(self, board_size: int, player: entity.Player):
+        pos_offset = board_size // 4
+        # move the player backwards
+        player.position = board_size  % (2*player.position - pos_offset)
 
 
 class Train(Tile):
     def __init__(self):
         self.name = 'Train'
+    
+    def when_walked(self, board_size: int, player: entity.Player):
+        pos_offset = board_size // 4
+        # move the player forward
+        player.position = board_size % (player.position + pos_offset)
 
 
 class StreetTile(Tile):

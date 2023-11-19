@@ -5,3 +5,5 @@ class Player:
         self.name = name
         self.houses = {}
         self.money = 0
+        
+        self.position = 0

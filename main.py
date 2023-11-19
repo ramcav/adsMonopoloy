@@ -49,7 +49,7 @@ class Party:
         self.player_list = tuple(entity.Player('', i) for i in range(pl_nb))
         self.board = board.Board(board_size)
 
-        # temporari variables for the player creation
+        # temporary variables for the player creation
         temp_name_list = []
         name = ''
         i = 0
@@ -87,7 +87,6 @@ class Turn:
 
     def __init__(self, board: board.Board) -> None:
         self.turn_nb = Turn.NB
-
         Turn.NB += 1
 
     # turn checking player priority -> V
