@@ -50,7 +50,7 @@ class Party:
         self.player_list = tuple(entity.Player('', i) for i in range(pl_nb))
         self.board = board.Board(board_size)
 
-        # temporari variables for the player creation
+        # temporary variables for the player creation
         temp_name_list = []
         name = ''
         i = 0
