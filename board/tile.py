@@ -1,3 +1,4 @@
+import PROJECT.entity
 import data
 import entity
 
@@ -18,11 +19,21 @@ class Tile:
 class Prison(Tile):
     def __init__(self):
         self.name = 'Prison'
+    
+    def when_walked(self, board_size: int, player: entity.Player):
+        pos_offset = board_size // 4
+        # move the player backwards
+        player.position = board_size  % (2*player.position - pos_offset)
 
 
 class Train(Tile):
     def __init__(self):
         self.name = 'Train'
+    
+    def when_walked(self, board_size: int, player: entity.Player):
+        pos_offset = board_size // 4
+        # move the player forward
+        player.position = board_size % (player.position + pos_offset)
 
 
 class StreetTile(Tile):
@@ -61,7 +72,7 @@ class StreetTile(Tile):
             while True:
                 desision = str(input("Do you want to buy a house [y/n]: "))
                 if desision == "y":
-                    if self.buy_house(player):
+                    if self.buy_house():
                         break
                     else:
                         break  # in the case of stubborn player
@@ -90,7 +101,7 @@ class StreetTile(Tile):
         return super().__str__()
 
     # this method add a house to the tile (if lower than 3)
-    def buy_house(self, house: int):
+    def buy_house(self):
         if self.owner.money < self.price:
             print("You dont have enough money")
             return 0
