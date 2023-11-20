@@ -1,0 +1,11 @@
+{
+    "python.analysis.diagnosticSeverityOverrides": {
+        "python.linting.pep8Enabled": true,
+        "python.linting.pylintEnabled": true
+    },
+    "files.autoSave": "afterDelay",
+    "editor.suggest.insertMode": "replace",
+    "workbench.editorLargeFileConfirmation": 2048,
+    "python.missingPackage.severity": "Error",
+    "python.analysis.typeCheckingMode": "basic"
+}
