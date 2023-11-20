@@ -61,7 +61,7 @@ class StreetTile(Tile):
             while True:
                 desision = str(input("Do you want to buy a house [y/n]: "))
                 if desision == "y":
-                    if self.buy_house(player):
+                    if self.buy_house():
                         break
                     else:
                         break  # in the case of stubborn player
@@ -90,7 +90,7 @@ class StreetTile(Tile):
         return super().__str__()
 
     # this method add a house to the tile (if lower than 3)
-    def buy_house(self, house: int):
+    def buy_house(self):
         if self.owner.money < self.price:
             print("You dont have enough money")
             return 0
