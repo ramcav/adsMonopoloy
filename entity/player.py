@@ -6,4 +6,4 @@ class Player:
 
         self.name = name
         self.houses = {}
-        self.money = 1000
+        self.money = 0

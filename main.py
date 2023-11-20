@@ -49,7 +49,7 @@ class Party:
         self.player_list = tuple(entity.Player('', i) for i in range(pl_nb))
         self.board = board.Board(board_size)
 
-        # temporari variables for the player creation
+        # temporary variables for the player creation
         temp_name_list = []
         name = ''
         i = 0
@@ -89,7 +89,6 @@ class Turn:
                  board: board.Board,
                  player_list: tuple[entity.Player, ...]) -> None:
         self.turn_nb = Turn.NB
-
         Turn.NB += 1
 
         for nb_player, player in enumerate(player_list):
