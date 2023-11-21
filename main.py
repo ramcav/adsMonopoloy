@@ -80,13 +80,13 @@ class Party:
         self.turns = []
 
         while True:
-            Turn(self.board)
+            Turn(self.board, self.player_list)
 
 
 class Turn:
     NB = 0
 
-    def __init__(self, board: board.Board, player: entity.Player, board_size: int) -> None:
+    def __init__(self, board: board.Board, player: entity.Player, board_size: int, player_list: tuple[entity.Player, ...]) -> None:
         self.turn_nb = Turn.NB
         self.player = player
         self.board_size = board_size
@@ -103,6 +103,10 @@ class Turn:
         # activate tile action
         self.board.board_tiles[tile_nb].when_walked(self.player)
         
+
+        for nb_player, player in enumerate(player_list):
+            if nb_player == player.priority:
+                board.tiles_list[player.pos].when_walked(player)
 
     # turn checking player priority -> V
     # pass player pos to board -> V
