@@ -4,6 +4,7 @@ import data
 from . import tile
 
 
+
 class Board:
     def __init__(self, board_size=4):
         self.board_size = board_size
