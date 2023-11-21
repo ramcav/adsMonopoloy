@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import data
-import board.tile as tile
+from . import tile
+
 
 
 class Board:

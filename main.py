@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-
+import random
 import board
 import entity
 
@@ -73,6 +73,9 @@ class Party:
         print("Have a good game:", end='')
         for i in self.player_list:
             print(f" {i.name}", end='')
+            
+        self.play() # test
+        
         print()
 
     def play(self):
@@ -93,7 +96,20 @@ class Turn:
 
         for nb_player, player in enumerate(player_list):
             if nb_player == player.priority:
-                board.tiles_list[player.pos].when_walked(player)
+                self.roll_dice(player, board)
+    
+    def roll_dice(self, player: entity.Player, board: board.Board):
+        # roll dice and update player position
+        x = input(("Press enter to roll the dice: "))
+        player.pos = (player.pos + random.randint(0,6)) % board.board_size
+        print(f"You ended up on tile: {player.pos}")
+        # walk on the tile
+        self.on_tile(player.pos, player, board)
+
+    def on_tile(self, tile_nb: int, player: entity.Player, board: board.Board):
+        # activate tile action
+        board.tiles_list[tile_nb].when_walked(player)
+
 
     # turn checking player priority -> V
     # pass player pos to board -> V
