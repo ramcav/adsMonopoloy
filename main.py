@@ -100,8 +100,12 @@ class Turn:
     
     def roll_dice(self, player: entity.Player, board: board.Board):
         # roll dice and update player position
-        x = input(("Press enter to roll the dice: "))
-        player.pos = (player.pos + random.randint(0,6)) % board.board_size
+        x = input((f"\n{player.name}: press enter to roll the dice: "))
+        dice_outcome = random.randint(0,6)
+        
+        print(f"You got a {dice_outcome}!")
+        
+        player.pos = (player.pos + dice_outcome) % (((board.board_size - 2) * 4) + 4)
         print(f"You ended up on tile: {player.pos}")
         # walk on the tile
         self.on_tile(player.pos, player, board)

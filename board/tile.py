@@ -23,7 +23,9 @@ class Prison(Tile):
     def when_walked(self, board_size: int, player: entity.Player):
         pos_offset = board_size // 4
         # move the player backwards
-        player.pos = board_size  % (2*player.pos - pos_offset)
+        player.pos = (2*player.pos - pos_offset) % (((board_size - 2) * 4) + 4)
+        
+        print(f"Oops! You landed on the jail and moved back to {player.pos}")
 
 
 class Train(Tile):
@@ -33,7 +35,9 @@ class Train(Tile):
     def when_walked(self, board_size: int, player: entity.Player):
         pos_offset = board_size // 4
         # move the player forward
-        player.pos = board_size % (player.pos + pos_offset)
+        player.pos = (2*player.pos + pos_offset) % (((board_size - 2) * 4) + 4)
+        
+        print(f"Congrats! You fell on the train and moved forward to {player.pos}")
 
 
 class StreetTile(Tile):
