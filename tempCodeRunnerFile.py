@@ -1,1 +1,1 @@
- board.tiles_list[tile_nb].when_walked(player)
+(player.pos + dice_outcome) % (((board.board_size - 2) * 4) + 4)

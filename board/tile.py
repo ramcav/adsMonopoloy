@@ -19,10 +19,12 @@ class Prison(Tile):
     def __init__(self):
         self.name = 'Prison'
     
-    def when_walked(self, board_size: int, player: entity.Player):
+    def when_walked(self, player: entity.Player, board_size: int):
         pos_offset = board_size // 4
-        # move the player backwards
-        player.pos = (2*player.pos - pos_offset) % (((board_size - 2) * 4) + 4)
+        
+         # move the player backwards
+        player.pos = (player.pos - pos_offset) % (((board_size - 2) * 4) + 4)
+       
         
         print(f"Oops! You landed on the jail and moved back to {player.pos}")
 
@@ -31,12 +33,13 @@ class Train(Tile):
     def __init__(self):
         self.name = 'Train'
     
-    def when_walked(self, board_size: int, player: entity.Player):
+    def when_walked(self, player: entity.Player, board_size: int):
         pos_offset = board_size // 4
         # move the player forward
-        player.pos = (2*player.pos + pos_offset) % (((board_size - 2) * 4) + 4)
+        player.pos = (player.pos + pos_offset) % (((board_size - 2) * 4) + 4)
         
         print(f"Congrats! You fell on the train and moved forward to {player.pos}")
+    
 
 
 class StreetTile(Tile):
@@ -57,7 +60,7 @@ class StreetTile(Tile):
         self.money_pool = 0
 
     # This method is triggered when a player stop on the tile
-    def when_walked(self, player: entity.Player):
+    def when_walked(self, player: entity.Player, board_size = None):
         # first case: the Tile does not have an owner
         if self.owner is StreetTile.DEFAULT_PLAYER:
             while True:
