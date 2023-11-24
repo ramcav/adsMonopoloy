@@ -112,7 +112,7 @@ class Turn:
 
     def on_tile(self, tile_nb: int, player: entity.Player, board: board.Board):
         # activate tile action
-        board.tiles_list[tile_nb].when_walked(player)
+        board.tiles_list[tile_nb].when_walked(player, board.board_size)
 
 
     # turn checking player priority -> V

@@ -1,0 +1,45 @@
+def fib_td_aux(n, cache):
+    if cache[n] >= 0:
+        return cache[n]
+    
+    if n< 2:
+        cache[n] = 1
+        
+    else:
+        cache[n] = fib_td_aux(n-1, cache) + fib_td_aux(n-2, cache)
+    return cache[n]
+
+def fib_td(n):
+    cache = [float('inf')*(n+1)]
+    return fib_td_aux(n, cache)
+
+def fib_bu(n):
+    cache = [float('-inf')*(n+1)]
+    cache[0] = cache[1] = 1
+    for i in range(2, n+1):
+        cache[i] = cache[i-1] + cache[i-2]
+        
+items = [('guitar', 1, 1500), ('laptop', 3, 2000), ('stereo', 4, 3000)]
+
+def knapsack(items, knapsak_size):
+    
+    cache = [[float('-inf') for _ in range(knapsak_size)] for _ in range(len(items))]
+    
+    for i in range(len(cache)):
+        _, weight, price = items[i]
+        weight -= 1
+        for j in range(knapsak_size):
+            if i == 0:
+                if weight >= j:
+                    cache[i][j] = price
+            else:
+                if weight <= j:
+                    candidate = price
+                if weight > j:
+                    candidate = cache[i-1][j]
+                else:
+                    candidate = price + cache[i-1][j-weight-1]
+                cache[i][j] = max(candidate, cache[i-1][j])
+    return cache
+            
+                

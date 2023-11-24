@@ -10,7 +10,39 @@ class Board:
         self.board_size = board_size
         self.tile_nb = board_size**2
 
-        self.tiles_list = tuple(tile.StreetTile(i) for nbi, i in enumerate(data.capitales_dict) if nbi < self.tile_nb)
+        self.tiles_list = self.create_tiles(self.board_size)
+
+    # Function to populate the board with
+    # regular street tiles
+    # and special tiles
+    def create_tiles(self, board_size: int)->tuple:
+         # Ensure frequency is at least 1
+         # so we have at least one special tile
+        
+        freq = max(1, board_size // 5)
+        special_tile_counter = 0
+        tiles_temp_list = []
+        j = 1
+
+        for nbi, i in enumerate(data.capitales_dict):
+            if nbi < self.tile_nb:
+                if special_tile_counter == freq:
+                    if j % 2 == 0:
+                        special_tile = tile.Prison()
+                    else:
+                        special_tile = tile.Train()
+                        
+                    tiles_temp_list.append(special_tile)
+                    special_tile_counter = 0
+                    j += 1
+                    
+                else:
+                    tiles_temp_list.append(tile.StreetTile(i))
+                    special_tile_counter += 1
+
+        return tuple(tiles_temp_list)
+    
+    
 
     def str_format(self, string) -> str:
         buffer = 0
