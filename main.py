@@ -73,6 +73,9 @@ class Party:
         print("Have a good game:", end='')
         for i in self.player_list:
             print(f" {i.name}", end='')
+            
+        self.play() # test
+        
         print()
         self.play() # test
         

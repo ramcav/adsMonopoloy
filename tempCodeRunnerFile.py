@@ -1,0 +1,1 @@
+(player.pos + dice_outcome) % (((board.board_size - 2) * 4) + 4)
