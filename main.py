@@ -117,8 +117,9 @@ class Turn:
 
 
 def testing():
-    print(board.Board(6))
+    print(board.Board(8))
 
 
 if __name__ == '__main__':
-    Game()
+    # Game()
+    testing()

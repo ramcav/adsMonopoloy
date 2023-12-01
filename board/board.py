@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import data
-from . import tile
+import board.tile as tile
 
 
 
@@ -10,8 +10,17 @@ class Board:
         self.board_size = board_size
         self.tile_nb = board_size**2
 
-        self.tiles_list = tuple(tile.StreetTile(i) for nbi, i in enumerate(data.capitales_dict) if nbi < self.tile_nb)
+        # Comprehensions that generatre a list containing a list of
+        tiles_list = list(tile.StreetTile(i) for nbi, i in enumerate(data.capitales_dict) if nbi < self.tile_nb)
 
+        # seting stain station and prison
+        tiles_list[self.board_size*3 - 3] = tile.Prison()
+
+        self.tiles_list = tuple(tiles_list)
+        del tiles_list
+
+
+    # str_format center the name of the city in a | bounded standart sized area of 16 char
     def str_format(self, string) -> str:
         buffer = 0
         if len(string) % 2:
@@ -28,32 +37,47 @@ class Board:
         return formated
 
     def __repr__(self) -> str:
-        to_display = '|'
+        # initialize `to_display` with |
+        to_display = '|'        
 
-        counter = 0
+        # separation of the 4 part of the table
+        # 1. top_display:     the top of the board (contain 2 of the 4 corners)
+        # 2. right_display:   the right part of the board (does not contain the corner)
+        # 3. bottom_display:  the bottom part of the board  (contain 2 of the 4 corners)
+        # 4. left_display:    the left part of the board (does not contain the corner)
+        top_display = self.tiles_list[0:self.board_size]
+        right_display = self.tiles_list[self.board_size: self.board_size*2 - 2]
+        bottom_display = self.tiles_list[self.board_size * 2 - 2: self.board_size * 3 - 2]
+        left_display = self.tiles_list[self.board_size*3 -2: self.board_size*4 - 4]
 
-        for _ in range(counter, self.board_size):
-            to_display += self.str_format(self.tiles_list[counter].name)
-            counter += 1
+        # revers the right and bottom part of the bord for proper display
+        # the bottom_display and left_display need to be reversed for--
+        # --the correct "roatation" of the player on the board
+        bottom_display = tuple(reversed(bottom_display))
+        left_display = tuple(reversed(left_display))
 
-        to_display += '\n'
 
-        for _ in range(counter, counter + self.board_size - 2):
+        # print the top of the board
+        for tile in top_display:
+            to_display += self.str_format(tile.name)
+        to_display += "\n"
+        
+        # print the 2 sides of the board
+        for counter in range(len(right_display)):
             to_display += '|'
-            to_display += self.str_format(self.tiles_list[counter].name)
+            to_display += self.str_format(left_display[counter].name)
             to_display += " " * (17 * (self.board_size - 2) - 1)
             to_display += '|'
-            to_display += self.str_format(self.tiles_list[counter + 1].name)
-
-            counter += 2
+            to_display += self.str_format(right_display[counter].name)
             to_display += '\n'
 
+        # print the bottom part of the board (in revers order for continuity)
         to_display += '|'
-        for _ in range(counter, counter + self.board_size):
-            to_display += self.str_format(self.tiles_list[counter].name)
-            counter += 1
-
+        for tile in bottom_display:
+            to_display += self.str_format(tile.name)
+            
         return to_display
+        
 
 
 def testing():
