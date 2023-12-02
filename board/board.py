@@ -10,10 +10,12 @@ class Board:
         self.board_size = board_size
         self.tile_nb = board_size**2
 
+        #time complexity: O(n) where n is the number of tiles
         # Comprehensions that generatre a list containing a list of
         tiles_list = list(tile.StreetTile(i) for nbi, i in enumerate(data.capitales_dict) if nbi < self.tile_nb)
 
         # seting stain station and prison
+        #time complexity: O(1)
         tiles_list[self.board_size*3 - 3] = tile.Prison()
 
         self.tiles_list = tuple(tiles_list)
@@ -23,6 +25,7 @@ class Board:
     # str_format center the name of the city in a | bounded standart sized area of 16 char
     def str_format(self, string) -> str:
         buffer = 0
+        #time complexity: O(1) 
         if len(string) % 2:
             buffer = 1
 
@@ -58,11 +61,13 @@ class Board:
 
 
         # print the top of the board
+        #time complexity: O(n) where n is the number of tiles
         for tile in top_display:
             to_display += self.str_format(tile.name)
         to_display += "\n"
         
         # print the 2 sides of the board
+        #time complexity: O(n) where n is the number of tiles
         for counter in range(len(right_display)):
             to_display += '|'
             to_display += self.str_format(left_display[counter].name)
@@ -72,6 +77,7 @@ class Board:
             to_display += '\n'
 
         # print the bottom part of the board (in revers order for continuity)
+        #time complexity: O(n) where n is the number of tiles
         to_display += '|'
         for tile in bottom_display:
             to_display += self.str_format(tile.name)
