@@ -77,14 +77,54 @@ class Party:
         self.play() # test
         
         print()
+        self.play() # test
+        
+        print()
 
     def play(self):
         self.turns = []
 
         while True:
+            self.print_player_list(self.get_ranked_players())
             Turn(self.board, self.player_list)
 
+    def print_player_list(self, player_list: tuple[entity.Player, ...] | None = None):
+        player_list = player_list or self.player_list
+        for player in self.player_list:
+            print(player.name, end=' ')
+    def get_ranked_players(self):
+        ranking = merge_sort(self.player_list, key=lambda x: x.money)
+        return ranking
 
+
+def merge_sort(lst, key=lambda x: x):
+    if len(lst) <= 1:
+        return lst
+
+    mid = len(lst) // 2
+    left_half = merge_sort(lst[:mid], key)
+    right_half = merge_sort(lst[mid:], key)
+
+    return merge(left_half, right_half, key)
+
+def merge(left, right, key):
+    merged = []
+    left_index = 0
+    right_index = 0
+
+    while left_index < len(left) and right_index < len(right):
+        if key(left[left_index]) < key(right[right_index]):
+            merged.append(left[left_index])
+            left_index += 1
+        else:
+            merged.append(right[right_index])
+            right_index += 1
+
+    merged += left[left_index:]
+    merged += right[right_index:]
+
+    return merged
+    
 class Turn:
     NB = 0
 
@@ -100,15 +140,19 @@ class Turn:
     
     def roll_dice(self, player: entity.Player, board: board.Board):
         # roll dice and update player position
-        x = input(("Press enter to roll the dice: "))
-        player.pos = (player.pos + random.randint(0,6)) % board.board_size
+        x = input((f"\n{player.name}: press enter to roll the dice: "))
+        dice_outcome = random.randint(1,6)
+        
+        print(f"You got a {dice_outcome}!")
+        
+        player.pos = (player.pos + dice_outcome) % (((board.board_size - 2) * 4) + 4)
         print(f"You ended up on tile: {player.pos}")
         # walk on the tile
         self.on_tile(player.pos, player, board)
 
     def on_tile(self, tile_nb: int, player: entity.Player, board: board.Board):
         # activate tile action
-        board.tiles_list[tile_nb].when_walked(player)
+        board.tiles_list[tile_nb].when_walked(player, board.board_size)
 
 
     # turn checking player priority -> V
