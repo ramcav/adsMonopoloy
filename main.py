@@ -4,10 +4,11 @@ import random
 import board
 import entity
 
+from typing import Optional
 
 class Game:
     def __init__(self) -> None:
-        print("Welcom in adsMonopoly")
+        print("\nWelcome to adsMonopoly!\n")
 
         self.new_party()
 
@@ -22,7 +23,10 @@ class Game:
         while True:
             try:
                 nb_of_player = int(input(NB_PLAYER))
-                break
+                if nb_of_player < 2:
+                    print("You need at least 2 players to play.")
+                else:
+                    break
             except ValueError:
                 print(NO_INT_SELECTION)
 
@@ -36,9 +40,8 @@ class Game:
 
         nb_of_tiles = ((board_size - 2) * 4) + 4
 
-        print(f"You selected {nb_of_player} player.")
-        print(f"You will play on a {board_size} x {board_size} board.")
-        print(f"It contain : {nb_of_tiles} tiles")
+        print(f"\nYou have selected {nb_of_player} player(s).")
+        print(f"You will play on a {board_size} x {board_size} board with {nb_of_tiles} tiles.\n")
 
         Party(nb_of_player, board_size)
 
@@ -48,11 +51,12 @@ class Party:
         self.nb_of_player = pl_nb
         self.player_list = tuple(entity.Player('', i) for i in range(pl_nb))
         self.board = board.Board(board_size)
-
+        
         # temporary variables for the player creation
         temp_name_list = []
         name = ''
         i = 0
+        print("\nPlayer Registration\n" + "-" * 20)
         while i < self.nb_of_player:
             name = str(input(f"Enter the name of the player number {i}: "))
 
@@ -70,9 +74,9 @@ class Party:
         del name
         del i
 
-        print("Have a good game:", end='')
-        for i in self.player_list:
-            print(f" {i.name}", end='')
+        print("\nGame Start\n" + "-" * 10)
+        print("Have a good game:", ', '.join(player.name for player in self.player_list))
+        print("\n")
             
         self.play() # test
         
@@ -83,15 +87,29 @@ class Party:
 
     def play(self):
         self.turns = []
+        current_player_index = 0
 
         while True:
             self.print_player_list(self.get_ranked_players())
             Turn(self.board, self.player_list)
+            current_player_index += 1
+            
+            if current_player_index >= self.nb_of_player-1:
+                print(self.board) 
+                current_player_index = 0 
+                
+                
+    def print_player_list(self, player_list: Optional[tuple[entity.Player, ...]] = None):
+        print("\nCurrent Player Rankings:\n" + "-" * 24)
+        
+        
+        
+        for player in player_list:
+            current_tile = self.board.tiles_list[player.pos]
+            print(f"{player.name} is on tile {player.pos} which has {current_tile.houses} houses (Money: {player.money})", end='\n')
+        print()
 
-    def print_player_list(self, player_list: tuple[entity.Player, ...] | None = None):
-        player_list = player_list or self.player_list
-        for player in self.player_list:
-            print(player.name, end=' ')
+            
     def get_ranked_players(self):
         ranking = merge_sort(self.player_list, key=lambda x: x.money)
         return ranking
@@ -128,25 +146,37 @@ def merge(left, right, key):
 class Turn:
     NB = 0
 
-    def __init__(self,
-                 board: board.Board,
-                 player_list: tuple[entity.Player, ...]) -> None:
+    def __init__(self, board: board.Board, player_list: tuple[entity.Player, ...]) -> None:
         self.turn_nb = Turn.NB
         Turn.NB += 1
+
+        print(f"\n--- Start of Turn {self.turn_nb} ---\n")
 
         for nb_player, player in enumerate(player_list):
             if nb_player == player.priority:
                 self.roll_dice(player, board)
-    
+
+        print(f"\n--- End of Turn {self.turn_nb} ---\n")  
+        print("-" * 30 + "\n")
+
     def roll_dice(self, player: entity.Player, board: board.Board):
         # roll dice and update player position
-        x = input((f"\n{player.name}: press enter to roll the dice: "))
-        dice_outcome = random.randint(1,6)
-        
-        print(f"You got a {dice_outcome}!")
-        
+        x = input((f"\n{player.name}'s turn: press enter to roll the dice: "))
+        dice_outcome = random.randint(1, 6)
+
+        print(f"\n{player.name} rolled a {dice_outcome}!")
+
+        player.prev_pos = player.pos  # Store current position as previous
         player.pos = (player.pos + dice_outcome) % (((board.board_size - 2) * 4) + 4)
-        print(f"You ended up on tile: {player.pos}")
+
+        # Check if the player has passed 'GO'
+        if player.prev_pos > player.pos:
+            player.money += 200
+            print(f"\nCongrats! {player.name} passed 'GO' and got 200$!\n")
+            
+            
+        print(f"{player.name} landed on tile: {player.pos}")
+        
         # walk on the tile
         self.on_tile(player.pos, player, board)
 
@@ -155,15 +185,11 @@ class Turn:
         board.tiles_list[tile_nb].when_walked(player, board.board_size)
 
 
-    # turn checking player priority -> V
-    # pass player pos to board -> V
-    # board pass player to tile
-
 
 def testing():
-    print(board.Board(8))
+    print(board.Board(6))
 
 
 if __name__ == '__main__':
     # Game()
-    testing()
+    Game()

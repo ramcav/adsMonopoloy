@@ -6,11 +6,10 @@ class Player:
 
         self.name = name
         
-        # houses is a dict which stores
-        # a reference to the tile as a key
-        # and a value of the amount of houses
-        # in such key
+        self.has_completed_round = False
         
         self.houses = {}
         
-        self.money = 0
+        self.money = 1000
+
+        self.prev_pos = 0

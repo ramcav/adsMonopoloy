@@ -1,1 +1,5 @@
-(player.pos + dice_outcome) % (((board.board_size - 2) * 4) + 4)
+mid = len(lst) // 2
+    left_half = merge_sort(lst[:mid], key)
+    right_half = merge_sort(lst[mid:], key)
+
+    return merge(left_half, right_half, key)

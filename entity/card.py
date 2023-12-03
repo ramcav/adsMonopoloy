@@ -1,3 +1,4 @@
+import random
 from . import player
 
 class Card:
@@ -46,17 +47,27 @@ class CardStack:
         self.removed = []
     
     def take(self, player: player.Player) -> int:
-        card = self.stack.pop
+        card = self.stack.pop()
         self.removed.append(card)
         card.invoke(player)
+        
+        return 0
     
     def remake_stack(self):
         cards = self.shuffle([card for card in self.removed])
         self.stack = [card for card in cards]
         
+        return 0
+        
     def shuffle(self, cards: []):
-        # pending algorithm
+        
+        # Fisher-Yates shuffle
+        for i in range(len(cards) - 1, 0, -1):
+            j = random.randint(0, i)
+            cards[i], cards[j] = cards[j], cards[i]
+        
         return cards
+
         
             
         
