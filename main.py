@@ -9,7 +9,6 @@ from typing import Optional
 class Game:
     def __init__(self) -> None:
         print("\nWelcome to adsMonopoly!\n")
-
         self.new_party()
 
     def new_party(self):
@@ -131,7 +130,7 @@ def merge(left, right, key):
     right_index = 0
 
     while left_index < len(left) and right_index < len(right):
-        if key(left[left_index]) < key(right[right_index]):
+        if key(left[left_index]) > key(right[right_index]):
             merged.append(left[left_index])
             left_index += 1
         else:
@@ -146,7 +145,7 @@ def merge(left, right, key):
 class Turn:
     NB = 0
 
-    def __init__(self, board: board.Board, player_list: tuple[entity.Player, ...]) -> None:
+    def __init__(self, board: board.Board, player_list: tuple[entity.Player, ...], ) -> None:
         self.turn_nb = Turn.NB
         Turn.NB += 1
 
@@ -154,6 +153,11 @@ class Turn:
 
         for nb_player, player in enumerate(player_list):
             if nb_player == player.priority:
+
+                if random.random() < 0.15:
+                    print("You got a random card!")
+                    board.card_stack.take(player)
+
                 self.roll_dice(player, board)
 
         print(f"\n--- End of Turn {self.turn_nb} ---\n")  

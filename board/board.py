@@ -2,10 +2,12 @@
 
 import data
 import board.tile as tile
+import entity.card as card
 
 
 class Board:
     def __init__(self, board_size=4):
+        self.card_stack = card.CardStack(24)
         self.board_size = board_size
         self.tile_nb = board_size**2
 
