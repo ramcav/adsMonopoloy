@@ -50,6 +50,44 @@ adsMonopoly is a Python-based Monopoly game with a customizable board and enhanc
 - `player.py`: Defines the Player class. Each player in the game is an instance of this class, which tracks their properties, such as position on the board, money, and owned houses.
 - `card.py`: Manages the cards used in the game. It includes the Card class for individual card actions and the CardStack class for handling the deck of cards.
 
+## Data Structures and Algorithms
+
+### Data Structures
+
+1. **Class-Based Structure**: Utilizing classes such as `Game`, `Player`, `Board`, and `Tile` allows for encapsulating complex functionalities and maintaining game state. This object-oriented approach simplifies code management and enhances readability, crucial for collaborative development.
+
+2. **Tuples and Lists**: To manage collections such as `player_list`, tuples and lists offer efficient access and update operations. Tuples, being immutable, provide a reliable way to maintain the integrity of fixed data (like player order), while lists offer flexibility for dynamic data.
+
+3. **Dictionaries**: In the `Player` class, dictionaries map properties to their respective number of houses. This choice facilitates quick lookups and updates, essential for real-time game actions like buying or upgrading properties.
+
+### Algorithms
+
+1. **Merge Sort**: (Time Complexity: O(n log n))
+
+   - Used for ranking players based on their money. Merge Sort is chosen for its efficiency in sorting large datasets, crucial for maintaining an accurate and updated leaderboard after each turn.
+   - Why Optimal: Merge Sort guarantees O(n log n) time complexity, making it highly efficient for sorting operations, even with a large number of players.
+
+2. **Random Selection**:
+
+   - Python's `random` module is used for dice rolls and card draws. This randomness is vital for ensuring each game session is unique and unpredictable.
+   - Why Optimal: Random selection introduces an essential element of chance, pivotal in a game like Monopoly where unpredictability enhances the gaming experience.
+
+3. **Tile Management**:
+
+   - The `when_walked` method in tile classes has a complexity of O(1), providing immediate feedback based on the game's current state.
+   - Why Optimal: Instantaneous tile action resolution is crucial for a smooth and responsive gameplay experience, especially important in a turn-based game where player engagement is key.
+
+4. **Board Initialization**:
+   - Initializing the game board dynamically based on chosen size involves calculating the number of tiles and strategically placing special tiles.
+   - Why Optimal: This approach allows for a customizable and scalable board, catering to different game preferences and durations.
+
+### Complexity Analysis
+
+- **Player Registration**: O(n), where n is the number of players. This linear complexity is due to the loop for player registration, ensuring that all players are accounted for without unnecessary overhead.
+- **Gameplay Loop**: The main loop's complexity depends on the number of turns and player actions, striking a balance between complexity and game depth.
+- **Tile Actions**: Generally, O(1), offering immediate feedback based on the current game state, is essential for player engagement and smooth game flow.
+
+These data structures and algorithms were chosen to balance efficiency, scalability, and player engagement, forming the backbone of `adsMonopoly` and ensuring a robust and engaging gameplay experience.
 
 ## Group Members
 
