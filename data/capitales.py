@@ -1,3 +1,6 @@
+# This file contains the dictionary of the capitales and their positions
+# Prices increase by 15 each tile
+
 capitales_dict = {
     "Washington": 100,
     "London": 115,

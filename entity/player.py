@@ -1,3 +1,4 @@
+# Player class
 class Player:
     def __init__(self, name: str, priority: int):
         self.priority = priority
