@@ -150,6 +150,8 @@ class Turn:
         
         # Time Complexity: O(n) (n = len(player_list))
         for nb_player, player in enumerate(party.player_list):
+                if player.has_lost():
+                    continue
                 # Cards given randomly
                 if random.random() < 0.15:
                     print(f"{player.name} got a random card!")
