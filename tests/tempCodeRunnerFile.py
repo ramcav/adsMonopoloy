@@ -1,0 +1,1 @@
+ assert player.pos == 9 

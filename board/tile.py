@@ -24,6 +24,7 @@ class Go(Tile):
         
     # Time Complexity: O(1)
     def when_walked(self, player: entity.Player, board_size: int):
+        
         print("\nYou landed on Go!\n" + "-" * 24)
 
 # Prison: Tile class

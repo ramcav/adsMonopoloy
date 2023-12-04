@@ -1,5 +1,6 @@
 import random
 from . import player
+from algos import fisher_yates_shuffle
 
 # Card: parent class for all the cards
 class Card:
@@ -26,7 +27,7 @@ class Card:
             
             # Add a house to the next available tile
             # with less than 3 houses
-            for (tile, houses) in player.houses:
+            for tile, houses in player.houses.items():
                 if houses < 3:
                     print(f"You are really lucky! You just inherited a house at tile {tile}!")
                     player.houses[tile] += 1
@@ -42,18 +43,20 @@ class Card:
                 return 0
         else:
             return 1
+        
+        return 1
                     
 # CardStack: class to handle the cards           
 class CardStack:
     def __init__(self, num_cards: int):
         # Create the cards
         cards = self.create_random_cards(num_cards)
-        self.cards = self.shuffle(cards)
+        self.cards = fisher_yates_shuffle(cards)
         self.stack = [card for card in self.cards]
         self.removed = []
 
     # Time Complexity: O(n) (n = num_cards)
-    def create_random_cards(self, num_cards: int) -> [Card]:
+    def create_random_cards(self, num_cards: int) -> list[Card]:
         return [Card(random.randint(0, 2)) for _ in range(num_cards)]
 
     # Time Complexity: O(1) 
@@ -68,23 +71,12 @@ class CardStack:
     
     # Time Complexity: O(n) (n = len(removed))
     def remake_stack(self):
-        cards = self.shuffle([card for card in self.removed])
+        cards = fisher_yates_shuffle([card for card in self.removed])
         self.stack = [card for card in cards]
+        self.removed = []
         
         return 0
     
-    # Time Complexity: O(n) (n = len(cards))
-    def shuffle(self, cards: []):
-        
-        # Fisher-Yates shuffle
-        # Time Complexity: O(n) (n = len(cards))
-        for i in range(len(cards) - 1, 0, -1):
-            j = random.randint(0, i)
-            cards[i], cards[j] = cards[j], cards[i]
-        
-        return cards
-
-        
             
         
     
