@@ -11,6 +11,7 @@ def merge_sort(lst, key=lambda x: x):
 
     return merge(left_half, right_half, key)
 
+
 # Time Complexity: O(n) (n = len(left) + len(right))
 def merge(left, right, key):
     merged = []

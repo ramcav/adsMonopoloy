@@ -11,6 +11,7 @@ import platform
 
 from typing import Optional
 
+
 class Game:
     def __init__(self) -> None:
         print("\nWelcome to adsMonopoly!\n")
@@ -18,8 +19,7 @@ class Game:
 
     # Time Complexity: O(1)
     def new_party(self):
-        
-       # Prompt strings
+        # Prompt strings
         NB_PLAYER = "How many players are in the game?: "
         BOARD_SIZE = "On what board size do you want to play?: "
 
@@ -36,7 +36,7 @@ class Game:
                     break
             except ValueError:
                 print(NO_INT_SELECTION)
-                
+
         # Time Complexity: O(1) (assuming the player enters a correct number)
         while True:
             try:
@@ -59,20 +59,20 @@ class Game:
 
 class Party:
     def __init__(self, pl_nb: int, board_size: int) -> None:
-        
+
         # initialize the game
         self.nb_of_player = pl_nb
         self.player_list = tuple(entity.Player('', i) for i in range(pl_nb))
         self.board = board.Board(board_size)
-        
+
         # Temporary variables for the player registration
         temp_name_list = []
         name = ''
         i = 0
-        
+
         # Player registration
         print("\nPlayer Registration\n" + "-" * 20)
-        
+
         # Time Complexity: O(n) (n = nb_of_player)
         while i < self.nb_of_player:
             name = str(input(f"Enter the name of the player number {i}: "))
@@ -101,7 +101,6 @@ class Party:
         print()
 
     def play(self):
-        
         # Initialize the game
         # keep track of the turns and the current player
         self.turns = []
@@ -111,30 +110,30 @@ class Party:
         while True:
             # Print the player list, sorted by money
             self.print_player_list(self.get_ranked_players())
-            
+
             # Start a new turn
             Turn(self.board, self.player_list)
-            
+
             # Update the current player
             current_player_index += 1
-            
+
             # Check if a set of turns is over to print the board
             if current_player_index >= self.nb_of_player-1:
                 clear_screen()
                 print("\nCurrent Board:\n" + "-" * 20)
                 print()
-                print(self.board) 
-                current_player_index = 0 
-                
+                print(self.board)
+                current_player_index = 0
+
     # Time Complexity: O(n) (n = len(player_list))
     def print_player_list(self, player_list: Optional[tuple[entity.Player, ...]] = None):
         print("\nCurrent Player Rankings:\n" + "-" * 24)
         n = 1
-        
+
         for player in player_list:
-            
+
             current_tile = self.board.tiles_list[player.pos]
-            if current_tile.houses != False:
+            if current_tile.houses:
                 print(f"Nº{n}. {player.name} is on tile {player.pos} which has {current_tile.houses} houses (Money: {player.money})", end='\n')
                 n += 1
             else:
@@ -148,6 +147,7 @@ class Party:
         ranking = merge_sort(self.player_list, key=lambda x: x.money)
         return ranking
 
+
 class Turn:
     NB = 0
 
@@ -155,31 +155,30 @@ class Turn:
     def __init__(self, board: board.Board, player_list: tuple[entity.Player, ...], ) -> None:
         self.turn_nb = Turn.NB
         Turn.NB += 1
-        
 
         print(f"\n--- Start of Turn {self.turn_nb} ---\n")
-        
+
         # Time Complexity: O(n) (n = len(player_list))
         for nb_player, player in enumerate(player_list):
-            
+
             # If it is the player's turn
             if nb_player == player.priority:
-                
+
                 # Cards given randomly
                 if random.random() < 0.15:
                     print(f"{player.name} got a random card!")
                     board.card_stack.take(player)
-                
+
                 # Roll the dice
                 self.roll_dice(player, board)
 
-        print(f"\n--- End of Turn {self.turn_nb} ---\n")  
+        print(f"\n--- End of Turn {self.turn_nb} ---\n")
         print("-" * 30 + "\n")
 
     # Time Complexity: O(1)
     def roll_dice(self, player: entity.Player, board: board.Board):
         # Roll the dice
-        x = input((f"\n{player.name}'s turn: press enter to roll the dice: "))
+        input((f"\n{player.name}'s turn: press enter to roll the dice: "))
         dice_outcome = random.randint(1, 6)
 
         print(f"\n{player.name} rolled a {dice_outcome}!")
@@ -193,10 +192,9 @@ class Turn:
         if player.prev_pos > player.pos:
             player.money += 200
             print(f"\nCongrats! {player.name} passed 'GO' and got 200$!\n")
-            
-            
+
         print(f"{player.name} landed on tile: {player.pos}")
-        
+
         # Activste the tile action
         self.on_tile(player.pos, player, board)
 
@@ -204,6 +202,7 @@ class Turn:
     def on_tile(self, tile_nb: int, player: entity.Player, board: board.Board):
         # Activate tile action
         board.tiles_list[tile_nb].when_walked(player, board.board_size)
+
 
 if __name__ == '__main__':
     # Game()
