@@ -122,7 +122,9 @@ class Party:
         n = 1
         
         for player in player_list:
-            
+            if player.has_lost():
+                print(f"Nº{n}. {player.name} has lost!", end='\n')
+                continue
             current_tile = self.board.tiles_list[player.pos]
             if current_tile.houses != False:
                 print(f"Nº{n}. {player.name} is on tile {player.pos} which has {current_tile.houses} houses (Money: {player.money})", end='\n')
@@ -150,6 +152,8 @@ class Turn:
         
         # Time Complexity: O(n) (n = len(player_list))
         for nb_player, player in enumerate(party.player_list):
+                if player.has_lost():
+                    continue
                 # Cards given randomly
                 if random.random() < 0.15:
                     print(f"{player.name} got a random card!")
