@@ -63,6 +63,7 @@ class Party:
         # initialize the game
         self.nb_of_player = pl_nb
         self.player_list = tuple(entity.Player('', i) for i in range(pl_nb))
+        self.players_lost = []
         self.board = board.Board(board_size)
         
         # Temporary variables for the player registration
@@ -113,18 +114,7 @@ class Party:
             self.print_player_list(self.get_ranked_players())
             
             # Start a new turn
-            Turn(self.board, self.player_list)
-            
-            # Update the current player
-            current_player_index += 1
-            
-            # Check if a set of turns is over to print the board
-            if current_player_index >= self.nb_of_player-1:
-                clear_screen()
-                print("\nCurrent Board:\n" + "-" * 20)
-                print()
-                print(self.board) 
-                current_player_index = 0 
+            Turn(self.board, self)
                 
     # Time Complexity: O(n) (n = len(player_list))
     def print_player_list(self, player_list: Optional[tuple[entity.Player, ...]] = None):
@@ -152,19 +142,14 @@ class Turn:
     NB = 0
 
     # Time Complexity: O(1)
-    def __init__(self, board: board.Board, player_list: tuple[entity.Player, ...], ) -> None:
+    def __init__(self, board: board.Board, party:Party) -> None:
         self.turn_nb = Turn.NB
         Turn.NB += 1
-        
 
         print(f"\n--- Start of Turn {self.turn_nb} ---\n")
         
         # Time Complexity: O(n) (n = len(player_list))
-        for nb_player, player in enumerate(player_list):
-            
-            # If it is the player's turn
-            if nb_player == player.priority:
-                
+        for nb_player, player in enumerate(party.player_list):
                 # Cards given randomly
                 if random.random() < 0.15:
                     print(f"{player.name} got a random card!")
@@ -172,8 +157,21 @@ class Turn:
                 
                 # Roll the dice
                 self.roll_dice(player, board)
-
+                if player.has_lost():
+                    party.players_lost.append(player)
+                    print(f"{player.name} lost!")
+                    if len(party.players_lost) == party.nb_of_player - 1:
+                        winner = next((player for player in party.player_list if not player.has_lost()), None)
+                        print(winner.name + " won!")
+                        exit()
+                
+    
         print(f"\n--- End of Turn {self.turn_nb} ---\n")  
+        clear_screen()
+        print("\nCurrent Board:\n" + "-" * 20)
+        print()
+        print(board) 
+        current_player_index = 0 
         print("-" * 30 + "\n")
 
     # Time Complexity: O(1)
