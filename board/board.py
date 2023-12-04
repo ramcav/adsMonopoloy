@@ -41,13 +41,13 @@ class Board:
 
     # Str_format to center the name of the city in a | bounded standart sized area of 16 char
     # Time Complexity: O(1)
-    def str_format(self, string1, houses) -> str:
+    def str_format(self, string1, houses, owner) -> str:
         
         buffer = 0
         
         # Add the houses to the string if there is any
         if houses != False:
-            houses_str = f"({houses * 'H'})"
+            houses_str = f"({houses * owner[0]})"
         else:
             houses_str = ''
             
@@ -96,23 +96,23 @@ class Board:
         # Print the top part of the board
         # Time Complexity: O(n) (n = len(top_display))
         for tile in top_display:
-            to_display += self.str_format(tile.name, tile.houses)
+            to_display += self.str_format(tile.name, tile.houses, tile.owner.name)
         to_display += "\n"
         
         # Print the right and left part of the board
         # Time Complexity: O(n) (n = len(right_display))
         for counter in range(len(right_display)):
             to_display += '|'
-            to_display += self.str_format(left_display[counter].name, left_display[counter].houses)
+            to_display += self.str_format(left_display[counter].name, left_display[counter].houses, left_display[counter].owner.name)
             to_display += " " * (17 * (self.board_size - 2) - 1)
             to_display += '|'
-            to_display += self.str_format(right_display[counter].name, right_display[counter].houses)
+            to_display += self.str_format(right_display[counter].name, right_display[counter].houses, left_display[counter].owner.name)
             to_display += '\n'
 
         # Print the bottom part of the board
         # Time Complexity: O(n) (n = len(bottom_display))
         to_display += '|'
         for tile in bottom_display:
-            to_display += self.str_format(tile.name, tile.houses)
+            to_display += self.str_format(tile.name, tile.houses, tile.owner.name)
             
         return to_display

@@ -3,6 +3,8 @@
 import random
 import board
 import entity
+import time
+
 from algos import merge_sort
 from method import clear_screen
 
@@ -79,20 +81,21 @@ class Party:
             name = str(input(f"Enter the name of the player number {i}: "))
 
             # Check if the name is alredy selected
-            if name not in temp_name_list:
+            if name not in temp_name_list and name != '':
                 print(name)
                 temp_name_list.append(name)
                 self.player_list[i].name = name
                 i += 1
 
             else:
-                print("The name is alredy selected")
+                print("The name is alredy selected or is invalid")
 
         # Explicitly delete of the temporary variables
         del temp_name_list
         del name
         del i
 
+        clear_screen()
         # Start the game
         print("\nGame Start\n" + "-" * 10)
         print("Have a good game:", ', '.join(player.name for player in self.player_list))
@@ -118,7 +121,7 @@ class Party:
                 
     # Time Complexity: O(n) (n = len(player_list))
     def print_player_list(self, player_list: Optional[tuple[entity.Player, ...]] = None):
-        print("\nCurrent Player Rankings:\n" + "-" * 24)
+        print("\nCurrent Player Rankings (by cash):\n" + "-" * 24)
         n = 1
         
         for player in player_list:
@@ -126,12 +129,7 @@ class Party:
                 print(f"Nº{n}. {player.name} has lost!", end='\n')
                 continue
             current_tile = self.board.tiles_list[player.pos]
-            if current_tile.houses != False:
-                print(f"Nº{n}. {player.name} is on tile {player.pos} which has {current_tile.houses} houses (Money: {player.money})", end='\n')
-                n += 1
-            else:
-                print(f"Nº{n}. {player.name} is on tile {player.pos} which has no houses (Money: {player.money})", end='\n')
-                n += 1
+            print(f"Nº{n}. {player.name} is on tile {self.board.tiles_list[player.pos].name}, owns {player.tiles} tiles and currently has {len(player.houses)} houses. (Money: {player.money})", end='\n')
         print()
 
     # Time Complexity: O(n log n) (n = len(player_list))
@@ -168,8 +166,13 @@ class Turn:
                         winner = next((player for player in party.player_list if not player.has_lost()), None)
                         print(winner.name + " won!")
                         exit()
-                
-    
+        
+        # Time Complexity: O(1) (as this loop always has 5 iterations)
+        # Used to wait 5 seconds before clearing the screen
+        for i in range(5, 0, -1):
+             print(f"Clearing screen in {i}...", end='\r', flush=True)
+             time.sleep(1)
+            
         print(f"\n--- End of Turn {self.turn_nb} ---\n")  
         clear_screen()
         print("\nCurrent Board:\n" + "-" * 20)

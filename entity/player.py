@@ -9,6 +9,8 @@ class Player:
         
         self.has_completed_round = False
         
+        self.tiles = []
+        
         self.houses = {}
         
         self.money = 1000

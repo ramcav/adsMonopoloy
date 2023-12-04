@@ -22,6 +22,9 @@ class Go(Tile):
         super().__init__("Go")
         self.houses = False
         
+        # Dummy default player to init the owner
+        self.owner = entity.Player("", -1)
+        
     # Time Complexity: O(1)
     def when_walked(self, player: entity.Player, board_size: int):
         
@@ -33,6 +36,9 @@ class Prison(Tile):
         # Set the name and houses to False
         self.name = "Prison"
         self.houses = False
+        
+        # Dummy default player to init the owner
+        self.owner = entity.Player("", -1)
     
     # Time Complexity: O(1)
     def when_walked(self, player: entity.Player, board_size: int):
@@ -49,6 +55,9 @@ class Train(Tile):
         # Set the name and houses to False
         self.name = 'Train'
         self.houses = False
+        
+        # Dummy default player to init the owner
+        self.owner = entity.Player("", -1)
     
     # Time Complexity: O(1)
     def when_walked(self, player: entity.Player, board_size: int):
@@ -71,7 +80,7 @@ class StreetTile(Tile):
         
         # Set the price, rent, owner, houses and money pool
         self.price = Tile.CAPITALES[name]
-        self.rent = self.price // 4
+        self.rent = self.price // 2
         self.owner = StreetTile.DEFAULT_PLAYER  # dummy player
         self.houses = 0
         self.money_pool = 0
@@ -85,12 +94,16 @@ class StreetTile(Tile):
             self.handle_tile_purchase(player)
 
         # The owner is on the Tile
-        elif self.owner is player:
+        elif self.owner is player and self.money_pool == 0 and self.houses < 3:
             self.handle_house_purchase(player)
 
         # Any player walk an owned Tile
         elif self.owner != StreetTile.DEFAULT_PLAYER and self.houses > 0:
             self.update_money_pool(player)
+        
+        # Any player walk an owned Tile without houses
+        elif self.owner != StreetTile.DEFAULT_PLAYER and self.houses == 0:
+            print(f"\n{self.owner.name} owns this tile. You don't have to pay rent because there are no houses yet!.\n" + "-" * 24)
 
     # Time Complexity: O(1) (asuuming the player has enough money and either buys or doesn't buy the tile)
     def handle_tile_purchase(self, player: entity.Player):
@@ -109,7 +122,7 @@ class StreetTile(Tile):
     # Time Complexity: O(1) (assuming the player has enough money and either buys or doesn't buy the house)
     def handle_house_purchase(self, player: entity.Player):
         while True:
-            decision = str(input("Do you want to buy a house on this Tile? [y/n]: "))
+            decision = str(input(f"Do you want to buy a house on this Tile (${self.price//2})? [y/n]: "))
             if decision == "y":
                 if self.buy_house():
                     print(f"\nYou bought a house on {self.name}. Total houses: {self.houses}\n" + "-" * 24)
@@ -131,6 +144,7 @@ class StreetTile(Tile):
         if player.money >= self.price:
             player.money -= self.price
             self.owner = player
+            player.tiles.append(self.name)
             return True
 
         print("\nYou don't have enough money\n" + "-" * 24)
@@ -143,15 +157,22 @@ class StreetTile(Tile):
     # Time Complexity: O(1)
     # This method add a house to the tile (if lower than 3)
     def buy_house(self):
-        if self.owner.money < self.price:
+        if self.owner.money < self.price // 2:
             print("\nYou don't have enough money\n" + "-" * 24)
             return False
 
         if self.houses >= 3:
             print("\nThere are already 3 houses on this tile\n" + "-" * 24)
             return False
-
+        
+        if self.houses == 0:
+            self.owner.houses[self] = 1
+        else:
+            self.owner.houses[self] += 1
+            
         self.houses += 1
+        self.owner.money -= self.price // 2
+        
         return True
 
     # Time Complexity: O(1)

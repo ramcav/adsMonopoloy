@@ -37,7 +37,7 @@ class Card:
                 
             # If no slot available, give the player money
             if not found:
-                print("You are ver lucky! You just won $ 50 !")
+                print("You are very lucky! You just won $ 50 !")
                 player.money += 50
                 found = False
                 return 0
