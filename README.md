@@ -12,7 +12,8 @@ adsMonopoly is a Python-based Monopoly game with a customizable board and enhanc
 
 1. Clone/download the repository
 2. Navigate to the project directory
-3. Run `python main.py` to start the game
+3. Install requirements.txt if testing is desired.
+4. Run `python main.py` to start the game
 
 ## How to Play
 
@@ -60,6 +61,8 @@ adsMonopoly is a Python-based Monopoly game with a customizable board and enhanc
 
 3. **Dictionaries**: In the `Player` class, dictionaries map properties to their respective number of houses. This choice facilitates quick lookups and updates, essential for real-time game actions like buying or upgrading properties.
 
+4. **Stack**: In the `CardStack` there is a stack implementation that represents what in real life would be a stack of cards containing different penalties and bonifications. This allows for fast card retrieval, as the user is always getting a card from the head of the stack. Cards get reshuffled using `fisher_yates_shuffle` every time the stack gets empty.
+
 ### Algorithms
 
 1. **Merge Sort**: (Time Complexity: O(n log n))
@@ -67,19 +70,23 @@ adsMonopoly is a Python-based Monopoly game with a customizable board and enhanc
    - Used for ranking players based on their money. Merge Sort is chosen for its efficiency in sorting large datasets, crucial for maintaining an accurate and updated leaderboard after each turn.
    - Why Optimal: Merge Sort guarantees O(n log n) time complexity, making it highly efficient for sorting operations, even with a large number of players.
 
-2. **Random Selection**:
+2. **Fisher-Yates shuffling**:
 
-   - Python's `random` module is used for dice rolls and card draws. This randomness is vital for ensuring each game session is unique and unpredictable.
-   - Why Optimal: Random selection introduces an essential element of chance, pivotal in a game like Monopoly where unpredictability enhances the gaming experience.
+   - Used for sorting the card stack when it is repopulated.
+   - Why Optimal: Fisher-Yates in its modern version uses random number generation to shuffle numbers in O(n) time complexity, which makes it really fast.
 
-3. **Tile Management**:
+4. **Tile Management**:
 
    - The `when_walked` method in tile classes has a complexity of O(1), providing immediate feedback based on the game's current state.
    - Why Optimal: Instantaneous tile action resolution is crucial for a smooth and responsive gameplay experience, especially important in a turn-based game where player engagement is key.
 
-4. **Board Initialization**:
-   - Initializing the game board dynamically based on chosen size involves calculating the number of tiles and strategically placing special tiles.
+5. **Board Initialization**:
+   - Initializing the game board dynamically based on the chosen size involves calculating the number of tiles and strategically placing special tiles. This takes O(n) in general as this algorithm is reduced to generating the tiles, adding them to a list, doing transformations to it, and then using type casting to turn the final board into a tuple.
    - Why Optimal: This approach allows for a customizable and scalable board, catering to different game preferences and durations.
+  
+6. **Basic Stack Operations**:
+   - For `Card` and `CardStack`, regular pop and append operations are carried away to allow users to take cards at random.
+   - Why Optimal: This approach allows for users to always take O(1) time when grabbing a card as they are always doing so from the head.
 
 ### Complexity Analysis
 
