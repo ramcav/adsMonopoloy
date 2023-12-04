@@ -122,7 +122,9 @@ class Party:
         n = 1
         
         for player in player_list:
-            
+            if player.has_lost():
+                print(f"Nº{n}. {player.name} has lost!", end='\n')
+                continue
             current_tile = self.board.tiles_list[player.pos]
             if current_tile.houses != False:
                 print(f"Nº{n}. {player.name} is on tile {player.pos} which has {current_tile.houses} houses (Money: {player.money})", end='\n')
