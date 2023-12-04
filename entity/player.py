@@ -14,3 +14,6 @@ class Player:
         self.money = 1000
 
         self.prev_pos = 0
+
+    def has_lost(self) -> bool:
+        return self.money <= 0
